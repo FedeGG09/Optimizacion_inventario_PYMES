@@ -5,14 +5,11 @@ services:
     plan: free
     branch: main
 
-    # ya no importa dónde esté workingDirectory
+    workingDirectory: backend     # <<-- Debe estar exactamente aquí
+
     buildCommand: |
       pip install --upgrade pip
-      cd backend
       pip install -r requirements.txt
 
-    startCommand: |
-      cd backend
-      uvicorn main:app --host 0.0.0.0 --port $PORT
-
+    startCommand: "uvicorn main:app --host 0.0.0.0 --port $PORT"
     healthCheckPath: /
