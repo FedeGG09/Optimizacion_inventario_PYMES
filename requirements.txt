@@ -1,8 +1,8 @@
-mlitfastapi
+-e .
+fastapi
 uvicorn[standard]
 pandas
 scikit-learn
 joblib
 xgboost
 python-multipart
-streamlit
