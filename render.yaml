@@ -1,34 +1,31 @@
 # render.yaml
 
 services:
-  # 1) API Python: FastAPI (backend/)
   - type: web
     name: optimizacion-inventario-api
     env: python
     plan: free
     branch: main
 
-    # Trabaja desde la carpeta backend/
+    # --------------------------------------------------
+    # 1) Trabajar desde la carpeta backend/
+    # --------------------------------------------------
     workingDirectory: backend
 
-    # Instala deps desde backend/requirements.txt
+    # --------------------------------------------------
+    # 2) Instalar requisitos Python (incluye uvicorn)
+    # --------------------------------------------------
     buildCommand: |
       pip install --upgrade pip
       pip install -r requirements.txt
 
-    # Arranca Uvicorn apuntando a main.py (ya en backend/)
-    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    # --------------------------------------------------
+    # 3) Arrancar Uvicorn apuntando a main:app (dentro de backend/)
+    #    - Uso de comillas dobles para asegurar expansión de $PORT
+    # --------------------------------------------------
+    startCommand: "uvicorn main:app --host 0.0.0.0 --port $PORT"
 
-    # Healthcheck para validar "/"
+    # --------------------------------------------------
+    # Healthcheck para comprobar que "/" responde algo
+    # --------------------------------------------------
     healthCheckPath: /
-
-  # 2) Frontend estático: tu carpeta frontend/src
-  - type: static
-    name: optimizacion-inventario-frontend
-    branch: main
-
-    staticPublishPath: frontend/src
-    buildCommand: echo "No build needed"
-    envVars:
-      - key: RENDER_REDIRECT_ROOT
-        value: "true"
