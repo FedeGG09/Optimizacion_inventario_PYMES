@@ -7,8 +7,7 @@ import pandas as pd
 import io
 from pathlib import Path
 
-from model_utils import load_data, predict_from_dataframe, evaluate_model
-
+from backend.model_utils import load_data, predict_from_dataframe, evaluate_model
 # -------------------------------------------------------
 # INSTANCIAMOS FastAPI Y CONFIGURAMOS CORS
 # -------------------------------------------------------
