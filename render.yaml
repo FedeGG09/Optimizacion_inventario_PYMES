@@ -1,31 +1,34 @@
 # render.yaml
 
 services:
-  # 1) Servicio Python: FastAPI
+  # 1) API FastAPI (deploy desde la raíz)
   - type: web
     name: optimizacion-inventario-api
     env: python
     plan: free
     branch: main
 
-    # Entra en backend/ para instalar deps
-    workingDirectory: backend
+    # Instala deps desde backend/requirements.txt
     buildCommand: |
       pip install --upgrade pip
-      pip install -r requirements.txt
+      pip install -r backend/requirements.txt
 
-    # Arranca Uvicorn apuntando a main.py en backend/
-    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    # Arranca uvicorn apuntando al módulo backend.main
+    # (se ejecuta en la raíz, así Python ve model_utils.py también)
+    startCommand: uvicorn backend.main:app --host 0.0.0.0 --port $PORT
 
     healthCheckPath: /
 
-  # 2) Servicio estático: tu frontend
+  # 2) Frontend estático (serve React/HTML/CSS)
   - type: static
     name: optimizacion-inventario-frontend
     branch: main
 
-    # Ruta donde está tu index.html (si usas React/Vite sería dist/, aquí es src/)
     staticPublishPath: frontend/src
+    buildCommand: echo "No build needed"
+    envVars:
+      - key: RENDER_REDIRECT_ROOT
+        value: "true"
 
     # Para Single-Page-Apps, redirigir 404 a index.html
     envVars:
