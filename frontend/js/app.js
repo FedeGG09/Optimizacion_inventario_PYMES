@@ -1,4 +1,3 @@
-// app.js
 console.log('Demo Sales Forecasting cargado');
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -70,23 +69,27 @@ async function initPredictionByFields() {
     return;
   }
 
-  // 3) Manejar submit del formulario
+  // 3) Manejar submit del formulario con POST JSON
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     resultDiv.textContent = "Calculando…";
     errorDiv.textContent  = "";
 
-    // 4) Construir query string con los valores
-    const params = new URLSearchParams({
+    // Prepara el payload
+    const payload = {
       region:       regionSel.value,
       product_id:   productSel.value,
       sub_category: subcatSel.value,
       order_date:   dateInput.value,
       model:        modelSel.value
-    });
+    };
 
     try {
-      const resp = await fetch(`/predict/by_fields?${params.toString()}`);
+      const resp = await fetch("/predict/by_fields", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
       if (!resp.ok) {
         const err = await resp.json().catch(() => ({}));
         throw new Error(err.detail || `Error ${resp.status}`);
