@@ -134,66 +134,45 @@
     </section>
 
     <!-- --------------------------------------------
-         5. SECCIÓN DE PREDICCIÓN MANUAL DE VENTAS
+         5. SECCIÓN DE PREDICCIÓN MANUAL DE VENTAS (ACTUALIZADA)
          -------------------------------------------- -->
     <section class="prediction-section">
       <div class="prediction-card">
-        <h2>🔮 Predicción de Ventas</h2>
+        <h2>🔮 Predicción de Profit / Quantity</h2>
         <form id="prediction-form">
-          <!-- Region -->
+          <!-- Selector de modelo -->
           <div class="form-row">
-            <label for="pred-region">🌍 Region</label>
-            <select id="pred-region"><option value="">Ej. West</option></select>
-          </div>
-          <!-- Product ID -->
-          <div class="form-row">
-            <label for="pred-product-id">📋 Product ID</label>
-            <select id="pred-product-id"><option value="">Ej. P-1001</option></select>
-          </div>
-          <!-- Category -->
-          <div class="form-row">
-            <label for="pred-category">💼 Category</label>
-            <select id="pred-category"><option value="">Ej. Technology</option></select>
-          </div>
-          <!-- Sub-Category -->
-          <div class="form-row">
-            <label for="pred-sub-category">📱 Sub-Category</label>
-            <select id="pred-sub-category"><option value="">Ej. Phones</option></select>
-          </div>
-          <!-- Product Name -->
-          <div class="form-row">
-            <label for="pred-product-name">📦 Product Name</label>
-            <select id="pred-product-name"><option value="">Ej. iPhone 12</option></select>
-          </div>
-          <!-- Order Date -->
-          <div class="form-row">
-            <label for="pred-date">📅 Fecha</label>
-            <input type="date" id="pred-date" />
-          </div>
-          <!-- Quantity -->
-          <div class="form-row">
-            <label for="pred-quantity">📦 Quantity</label>
-            <input type="number" id="pred-quantity" step="1" min="1" placeholder="Ej. 2" />
-          </div>
-          <!-- Discount -->
-          <div class="form-row">
-            <label for="pred-discount">🎟 Discount</label>
-            <input type="number" id="pred-discount" step="0.01" min="0" max="1" placeholder="Ej. 0.1" />
-          </div>
-          <!-- Profit -->
-          <div class="form-row">
-            <label for="pred-profit">💸 Profit</label>
-            <input type="number" id="pred-profit" step="0.01" placeholder="Ej. 200.00" />
+            <label for="model-select">Modelo:</label>
+            <select id="model-select" required>
+              <option value="profit">Profit</option>
+              <option value="quantity">Quantity</option>
+            </select>
           </div>
 
-          <!-- Botón Predecir -->
-          <button type="button" class="btn-green" onclick="submitPrediction()">
-            Predecir
-          </button>
+          <!-- Campos de features: ajusta f0…fN según tu config.pkl -->
+          <div id="features-container">
+            <div class="form-row">
+              <label for="f0">Feature 0:</label>
+              <input type="number" id="f0" name="f0" step="any" required />
+            </div>
+            <div class="form-row">
+              <label for="f1">Feature 1:</label>
+              <input type="number" id="f1" name="f1" step="any" required />
+            </div>
+            <div class="form-row">
+              <label for="f2">Feature 2:</label>
+              <input type="number" id="f2" name="f2" step="any" required />
+            </div>
+            <!-- …repite hasta el último feature… -->
+          </div>
 
-          <!-- Resultado -->
-          <div id="prediction-result" class="prediction-result"></div>
+          <!-- Botón de envío -->
+          <button type="submit" class="btn-green">Predecir</button>
         </form>
+
+        <!-- Resultados y errores -->
+        <div id="prediction-result" class="prediction-result"></div>
+        <div id="prediction-error" class="prediction-error" style="color:red;"></div>
       </div>
     </section>
   </main>
