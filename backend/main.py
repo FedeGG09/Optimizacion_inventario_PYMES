@@ -288,6 +288,19 @@ def predict_quantity(payload: PredictionIn):
     except Exception as e:
         raise HTTPException(500, f"Error interno: {e}")
 
+@app.get("/predict/config")
+def get_prediction_config():
+    """
+    Devuelve la lista de nombres de features que
+    espera cada modelo, para generar el formulario dinámicamente.
+    """
+    profit_feats   = load_profit_features()
+    quantity_feats = load_quantity_features()
+    return {
+        "profit": profit_feats,
+        "quantity": quantity_feats
+    }
+
 # -------------------------------------------------------
 # ENDPOINT: /sales_trend (Ventas por tiempo, mes o día, según filtros)
 # -------------------------------------------------------
