@@ -7,6 +7,8 @@ from typing import List
 import pandas as pd
 import io
 from pathlib import Path
+from fastapi import Query
+from backend.feature_engineering import build_features
 
 from backend.model_utils import load_data, predict_from_dataframe, evaluate_model, parse_month
 import joblib
