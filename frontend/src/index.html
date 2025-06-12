@@ -122,6 +122,26 @@
       <div class="prediction-card">
         <h2>🔮 Predicción de Profit / Quantity</h2>
         <form id="prediction-form">
+          <!-- Región -->
+          <div class="form-row">
+            <label for="region">Región:</label>
+            <select id="region" required></select>
+          </div>
+          <!-- Product ID -->
+          <div class="form-row">
+            <label for="product">Product ID:</label>
+            <select id="product" required></select>
+          </div>
+          <!-- Sub-Category -->
+          <div class="form-row">
+            <label for="subcat">Sub-Category:</label>
+            <select id="subcat" required></select>
+          </div>
+          <!-- Fecha -->
+          <div class="form-row">
+            <label for="date">Fecha:</label>
+            <input type="date" id="date" required />
+          </div>
           <!-- Selector de modelo -->
           <div class="form-row">
             <label for="model-select">Modelo:</label>
@@ -130,11 +150,6 @@
               <option value="quantity">Quantity</option>
             </select>
           </div>
-
-          <!-- Contenedor vacío para inputs, se llenará vía JS -->
-          <div id="features-container"></div>
-
-          <!-- Botón de envío -->
           <button type="submit" class="btn-green">Predecir</button>
         </form>
 
