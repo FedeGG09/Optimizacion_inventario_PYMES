@@ -287,7 +287,7 @@ def get_subcategories():
 # -------------------------------------------------------
 # 9) Predicción a partir de campos sencillos
 # -------------------------------------------------------
-@app.post("/predict/by_fields", response_model=PredictionOut)
+@app.get("/predict/by_fields", response_model=PredictionOut)
 def predict_by_fields(
     region:      str = Query(..., description="Región"),
     product_id:  str = Query(..., description="Product ID"),
