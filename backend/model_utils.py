@@ -11,7 +11,7 @@ MODEL_PATH    = Path(r"D:\Repositorios\Proyecto Sales forecasting\best_xgb_model
 FEATURES_PATH = Path(r"D:\Repositorios\Proyecto Sales forecasting\feature_names.pkl")
 
 # Diccionario para mapear nombre de mes en español → número 1–12
-MONTH_MAP: Dict[str, int] = {
+MONTH_MAP = {
     'enero':       1,
     'febrero':     2,
     'marzo':       3,
