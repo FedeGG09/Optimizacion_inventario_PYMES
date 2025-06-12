@@ -7,7 +7,29 @@ import pandas as pd
 import io
 from pathlib import Path
 
-from backend.model_utils import load_data, predict_from_dataframe, evaluate_model
+from backend.model_utils import load_data, predict_from_dataframe, evaluate_model, parse_month
+import joblib
+from functools import lru_cache
+from pathlib import Path
+
+MODELS_DIR = Path(__file__).parent / "models_features"
+
+@lru_cache()
+def load_profit_model():
+    return joblib.load(MODELS_DIR / "model_Profit.pkl")
+
+@lru_cache()
+def load_profit_features():
+    return joblib.load(MODELS_DIR / "features_Profit.pkl")
+
+@lru_cache()
+def load_quantity_model():
+    return joblib.load(MODELS_DIR / "model_Quantity.pkl")
+
+@lru_cache()
+def load_quantity_features():
+    return joblib.load(MODELS_DIR / "features_Quantity.pkl")
+
 # -------------------------------------------------------
 # INSTANCIAMOS FastAPI Y CONFIGURAMOS CORS
 # -------------------------------------------------------
