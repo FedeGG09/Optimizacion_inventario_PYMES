@@ -256,7 +256,37 @@ def get_grouped_data(
         }
         for _, row in grouped.iterrows()
     ]}
+@app.post("/predict/profit", response_model=PredictionOut)
+def predict_profit(payload: PredictionIn):
+    try:
+        feats = payload.features
+        cols  = load_profit_features()
+        if len(feats) != len(cols):
+            raise HTTPException(400, f"Se esperaban {len(cols)} features, llegaron {len(feats)}")
+        df = pd.DataFrame([feats], columns=cols)
+        model = load_profit_model()
+        pred  = model.predict(df)[0]
+        return {"prediction": float(pred)}
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(500, f"Error interno: {e}")
 
+@app.post("/predict/quantity", response_model=PredictionOut)
+def predict_quantity(payload: PredictionIn):
+    try:
+        feats = payload.features
+        cols  = load_quantity_features()
+        if len(feats) != len(cols):
+            raise HTTPException(400, f"Se esperaban {len(cols)} features, llegaron {len(feats)}")
+        df = pd.DataFrame([feats], columns=cols)
+        model = load_quantity_model()
+        pred  = model.predict(df)[0]
+        return {"prediction": float(pred)}
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(500, f"Error interno: {e}")
 
 # -------------------------------------------------------
 # ENDPOINT: /sales_trend (Ventas por tiempo, mes o día, según filtros)
