@@ -131,22 +131,8 @@
             </select>
           </div>
 
-          <!-- Campos de features: ajusta f0…fN según tu config.pkl -->
-          <div id="features-container">
-            <div class="form-row">
-              <label for="f0">Feature 0:</label>
-              <input type="number" id="f0" name="f0" step="any" required />
-            </div>
-            <div class="form-row">
-              <label for="f1">Feature 1:</label>
-              <input type="number" id="f1" name="f1" step="any" required />
-            </div>
-            <div class="form-row">
-              <label for="f2">Feature 2:</label>
-              <input type="number" id="f2" name="f2" step="any" required />
-            </div>
-            <!-- …repite hasta el último feature… -->
-          </div>
+          <!-- Contenedor vacío para inputs, se llenará vía JS -->
+          <div id="features-container"></div>
 
           <!-- Botón de envío -->
           <button type="submit" class="btn-green">Predecir</button>
@@ -157,7 +143,7 @@
         <div id="prediction-error" class="prediction-error" style="color:red;"></div>
       </div>
     </section>
-  </main> <!-- Cierre de main -->
+  </main>
 
   <!-- CARGA DEL JS DEL FRONTEND -->
   <script src="/static/js/upload.js"></script>
