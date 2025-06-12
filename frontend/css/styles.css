@@ -225,3 +225,14 @@ h2 {
   color: #e74c3c;
   margin-top: 10px;
 }
+<style>
+  /* Asegura que todo dentro de .prediction-card use texto negro */
+  .prediction-card,
+  .prediction-card h2,
+  .prediction-card label,
+  .prediction-card select,
+  .prediction-card input,
+  .prediction-card button {
+    color: #000 !important;
+  }
+</style>
