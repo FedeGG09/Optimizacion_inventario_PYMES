@@ -303,6 +303,26 @@ def get_prediction_config():
         "quantity": quantity_feats
     }
 
+@app.post("/predict/by_fields", response_model=PredictionOut)
+def predict_by_fields(
+    region:      str   = Query(..., description="Región (p.ej. West)"),
+    product_id:  str   = Query(..., description="Product ID (p.ej. P-1001)"),
+    sub_category:str   = Query(..., description="Sub-Category (p.ej. Phones)"),
+    order_date:  str   = Query(..., description="Fecha (YYYY-MM-DD)"),
+    model:       str   = Query("profit", regex="^(profit|quantity)$", description="profit o quantity")
+):
+    """
+    Construye todas las features por detrás y devuelve la predicción.
+    """
+    try:
+        df_feat = build_features(region, product_id, sub_category, order_date, model_type=model)
+        # Cargar el modelo adecuado
+        mdl = load_profit_model() if model=="profit" else load_quantity_model()
+        pred = mdl.predict(df_feat)[0]
+        return {"prediction": float(pred)}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
 # -------------------------------------------------------
 # ENDPOINT: /sales_trend (Ventas por tiempo, mes o día, según filtros)
 # -------------------------------------------------------
