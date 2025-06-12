@@ -6,21 +6,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard Interactivo de Ventas</title>
 
-  <!-- --------------------------------------------
-       CARGA DEL CSS DEL DASHBOARD (glassmorphism)
-       -------------------------------------------- -->
+  <!-- CSS del dashboard (glassmorphism) -->
   <link rel="stylesheet" href="/static/css/dashboard.css" />
   <link rel="stylesheet" href="/static/css/styles.css" />
 
-  <!-- --------------------------------------------
-       CARGA DE Chart.js DESDE CDN
-       -------------------------------------------- -->
+  <!-- Chart.js desde CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Estilo para forzar texto negro en predicción -->
+  <style>
+    .prediction-card,
+    .prediction-card h2,
+    .prediction-card label,
+    .prediction-card select,
+    .prediction-card input,
+    .prediction-card button {
+      color: #000 !important;
+    }
+  </style>
 </head>
 <body>
-  <!-- ======================
-       HEADER PRINCIPAL
-       ====================== -->
+  <!-- HEADER PRINCIPAL -->
   <header>
     <div class="header-left">
       <img
@@ -31,9 +37,7 @@
     </div>
   </header>
 
-  <!-- ======================
-       UPLOADER CSV
-       ====================== -->
+  <!-- UPLOADER CSV -->
   <section id="uploader" class="uploader-section">
     <h2>1. Carga tu CSV de Entrenamiento</h2>
     <input type="file" id="csvFileInput" accept=".csv" />
@@ -41,13 +45,9 @@
     <p id="uploadStatus"></p>
   </section>
 
-  <!-- ======================
-       CONTENEDOR PRINCIPAL (OCULTO HASTA UPLOAD)
-       ====================== -->
+  <!-- CONTENEDOR PRINCIPAL (OCULTO HASTA UPLOAD) -->
   <main id="actions" style="display: none;">
-    <!-- --------------------------------------------
-         1. FILA DE KPIs (Ventas Totales, Utilidad, etc.)
-         -------------------------------------------- -->
+    <!-- 1. FILA DE KPIs -->
     <section class="kpi-row">
       <div class="kpi-card">
         <div class="kpi-title">Ventas Totales</div>
@@ -67,33 +67,24 @@
       </div>
     </section>
 
-    <!-- --------------------------------------------
-         2. FILA DE SELECTORES (Mes, Cliente, Producto, Agrupar por)
-         -------------------------------------------- -->
+    <!-- 2. FILA DE SELECTORES -->
     <section class="filter-row">
-      <!-- Selector de Mes -->
       <div class="filter-item">
         <label for="month-range">Mes:</label>
         <input type="month" id="month-range" />
       </div>
-
-      <!-- Selector de Cliente -->
       <div class="filter-item">
         <label for="vendor-select">Cliente (Customer Name):</label>
         <select id="vendor-select">
           <option value="Todos">Todos</option>
         </select>
       </div>
-
-      <!-- Selector de Producto -->
       <div class="filter-item">
         <label for="product-select">Producto (Product Name):</label>
         <select id="product-select">
           <option value="Todos">Todos</option>
         </select>
       </div>
-
-      <!-- Selector de “Agrupar por” -->
       <div class="filter-item">
         <label for="group-by">Agrupar por:</label>
         <select id="group-by">
@@ -108,34 +99,25 @@
       </div>
     </section>
 
-    <!-- --------------------------------------------
-         3. GRÁFICO DE LÍNEAS: Ventas por Cliente o Ventas diarias
-         -------------------------------------------- -->
+    <!-- 3. GRÁFICO DE LÍNEAS -->
     <section class="chart-section">
       <h2 id="line-chart-title">Ventas 2020 por Cliente</h2>
       <canvas id="line-chart" height="250"></canvas>
     </section>
 
-    <!-- --------------------------------------------
-         4. FILA DE GRÁFICOS INFERIORES (Barras + Dispersión)
-         -------------------------------------------- -->
+    <!-- 4. GRÁFICOS INFERIORES -->
     <section class="bottom-charts">
-      <!-- 4.1 Ventas Totales (Barras) -->
       <div class="chart-card">
         <h3>Ventas Totales</h3>
         <canvas id="bar-chart" height="200"></canvas>
       </div>
-
-      <!-- 4.2 Utilidad vs Ingresos (Dispersión) -->
       <div class="chart-card">
         <h3>Utilidad vs Ingresos por Producto</h3>
         <canvas id="scatter-chart" height="200"></canvas>
       </div>
     </section>
 
-    <!-- --------------------------------------------
-         5. SECCIÓN DE PREDICCIÓN MANUAL DE VENTAS (ACTUALIZADA)
-         -------------------------------------------- -->
+    <!-- 5. SECCIÓN DE PREDICCIÓN MANUAL DE VENTAS -->
     <section class="prediction-section">
       <div class="prediction-card">
         <h2>🔮 Predicción de Profit / Quantity</h2>
@@ -175,14 +157,13 @@
         <div id="prediction-error" class="prediction-error" style="color:red;"></div>
       </div>
     </section>
-  </main>
+  </main> <!-- Cierre de main -->
 
-  <!-- --------------------------------------------
-       CARGA DEL JS DEL FRONTEND
-       -------------------------------------------- -->
+  <!-- CARGA DEL JS DEL FRONTEND -->
   <script src="/static/js/upload.js"></script>
   <script src="/static/js/metrics.js"></script>
   <script src="/static/js/dashboard.js"></script>
   <script src="/static/js/app.js"></script>
 </body>
 </html>
+
