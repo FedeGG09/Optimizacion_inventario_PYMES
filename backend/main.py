@@ -248,6 +248,43 @@ def get_prediction_config():
     return {"profit": profit_feats, "quantity": quantity_feats}
 
 # -------------------------------------------------------
+# 11) Endpoints para poblar dropdowns
+# -------------------------------------------------------
+
+@app.get("/metadata/regions")
+def get_regions():
+    """
+    Devuelve la lista de todas las regiones únicas del CSV subido.
+    """
+    df = _get_df()
+    if "Region" not in df.columns:
+        raise HTTPException(500, "No existe la columna 'Region'.")
+    regions = sorted(df["Region"].dropna().unique().tolist())
+    return regions
+
+@app.get("/metadata/products")
+def get_products():
+    """
+    Devuelve la lista de todos los nombres de producto únicos.
+    """
+    df = _get_df()
+    if "Product Name" not in df.columns:
+        raise HTTPException(500, "No existe la columna 'Product Name'.")
+    prods = sorted(df["Product Name"].dropna().unique().tolist())
+    return prods
+
+@app.get("/metadata/subcategories")
+def get_subcategories():
+    """
+    Devuelve la lista de todas las sub-categorías únicas.
+    """
+    df = _get_df()
+    if "Sub-Category" not in df.columns:
+        raise HTTPException(500, "No existe la columna 'Sub-Category'.")
+    subs = sorted(df["Sub-Category"].dropna().unique().tolist())
+    return subs
+
+# -------------------------------------------------------
 # 9) Predicción a partir de campos sencillos
 # -------------------------------------------------------
 @app.post("/predict/by_fields", response_model=PredictionOut)
