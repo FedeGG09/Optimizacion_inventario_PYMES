@@ -1,1 +1,1 @@
-# Optimizaci-n_inventario_PYMES
+# Optimizacion_inventario_PYMES
