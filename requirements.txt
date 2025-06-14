@@ -1,8 +1,9 @@
--e .
 fastapi
-uvicorn[standard]
+uvicorn
 pandas
 scikit-learn
-joblib
 xgboost
+joblib
+rapidfuzz
+nltk
 python-multipart

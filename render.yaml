@@ -1,14 +1,28 @@
+# render.yaml
 services:
+  # 1) API FastAPI (backend/)
   - type: web
     name: optimizacion-inventario-api
     env: python
     plan: free
     branch: main
+    workingDirectory: backend
 
-    # Ya no necesitas workingDirectory si el código está en root
     buildCommand: |
       pip install --upgrade pip
       pip install -r requirements.txt
 
-    startCommand: "uvicorn main:app --host 0.0.0.0 --port $PORT"
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /
+
+  # 2) Frontend estático (frontend/)
+  - type: static
+    name: optimizacion-inventario-frontend
+    branch: main
+
+    staticPublishPath: frontend/src
+    buildCommand: echo "No build needed"
+    envVars:
+      - key: RENDER_REDIRECT_ROOT
+        value: "true"
+
