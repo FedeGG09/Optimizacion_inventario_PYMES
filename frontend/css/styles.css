@@ -63,17 +63,6 @@ h2 {
   color: #333;
 }
 
-/* ======================
-   ACCIONES (OCULTO HASTA UPLOAD)
-   ====================== */
-#actions {
-  display: none;
-}
-
-/* cuando se añade la clase .visible, se muestra */
-#actions.visible {
-  display: block;
-}
 
 /* ======================
    FILA DE KPIs
