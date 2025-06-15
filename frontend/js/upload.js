@@ -1,56 +1,50 @@
-// upload.js
-console.log('upload.js cargado');
+// upload.js: gestiona la subida del CSV y muestra las predicciones.
 
-const csvInput   = document.getElementById('csvFileInput');
-const uploadBtn  = document.getElementById('uploadBtn');
-const statusP    = document.getElementById('uploadStatus');
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('upload-form');
+  const fileInput = document.getElementById('file-input');
+  const errorDiv = document.getElementById('upload-error');
+  const resultsBody = document.getElementById('results-body');
 
-// Habilita el botón cuando seleccionas un archivo
-csvInput.addEventListener('change', () => {
-  uploadBtn.disabled = !csvInput.files.length;
-  statusP.textContent = '';
-});
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    errorDiv.textContent = '';
+    resultsBody.innerHTML = '';
 
-uploadBtn.addEventListener('click', async () => {
-  if (!csvInput.files.length) return;
-  
-  // 1) Subir CSV
-  statusP.textContent = 'Subiendo CSV…';
-  const file = csvInput.files[0];
-  const form = new FormData();
-  form.append('file', file);
-
-  let resp;
-  try {
-    resp = await fetch('/upload_csv', { method: 'POST', body: form });
-  } catch (err) {
-    console.error('Error al conectar con /upload_csv', err);
-    statusP.textContent = 'Error de red al subir CSV';
-    return;
-  }
-
-  if (!resp.ok) {
-    const err = await resp.json().catch(() => ({}));
-    statusP.textContent = err.detail || `Error al subir CSV (${resp.status})`;
-    return;
-  }
-
-  statusP.textContent = 'CSV subido correctamente.';
-  document.dispatchEvent(new Event('csvUploaded'));
-
-  // 2) Entrenar modelos
-  statusP.textContent = 'Entrenando modelos… (esto puede tardar unos segundos)';
-  try {
-    const trainResp = await fetch('/train_xgb', { method: 'POST' });
-    if (!trainResp.ok) {
-      const err = await trainResp.json().catch(() => ({}));
-      statusP.textContent = err.detail || `Error entrenando (${trainResp.status})`;
+    const file = fileInput.files[0];
+    if (!file) {
+      errorDiv.textContent = 'Por favor selecciona un archivo CSV.';
       return;
     }
-    statusP.textContent = '✅ Modelos entrenados.';
-    document.dispatchEvent(new Event('modelsTrained'));
-  } catch (err) {
-    console.error('Error al conectar con /train_xgb', err);
-    statusP.textContent = 'Error de red al entrenar modelos';
-  }
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    fetch('http://localhost:8000/predict_csv', {
+      method: 'POST',
+      body: formData
+    })
+      .then(response => response.json())
+      .then(data => {
+        const predictions = data.predictions;
+        if (!predictions || predictions.length === 0) {
+          errorDiv.textContent = 'No se recibieron predicciones.';
+          return;
+        }
+        predictions.forEach((pred, idx) => {
+          const tr = document.createElement('tr');
+          const tdIdx = document.createElement('td');
+          tdIdx.textContent = idx + 1;
+          const tdPred = document.createElement('td');
+          tdPred.textContent = pred.toFixed(2);
+          tr.appendChild(tdIdx);
+          tr.appendChild(tdPred);
+          resultsBody.appendChild(tr);
+        });
+      })
+      .catch(err => {
+        errorDiv.textContent = 'Error al procesar la predicción.';
+        console.error(err);
+      });
+  });
 });

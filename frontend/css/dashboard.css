@@ -218,7 +218,7 @@ body {
 
 .prediction-card h2 {
   font-size: 1.3rem;
-  color: #000;               /* antes #fff */
+  color: #fff;
   margin-bottom: 1rem;
   display: flex;
   align-items: center;
@@ -232,7 +232,7 @@ body {
 }
 
 .form-row label {
-  color: #000;               /* antes #ddd */
+  color: #ddd;
   margin-bottom: 0.3rem;
   font-size: 0.95rem;
 }
@@ -242,7 +242,7 @@ body {
   background: rgba(255, 255, 255, 0.08);
   border: none;
   border-radius: 8px;
-  color: #000;               /* antes #fff */
+  color: #fff;
   padding: 0.5rem;
   font-size: 0.95rem;
 }
@@ -254,7 +254,7 @@ body {
 
 .btn-green {
   background-color: #28a745;
-  color: #000;               /* antes #fff, cambia el texto del botón */
+  color: #fff;
   padding: 0.7rem 1.2rem;
   border: none;
   border-radius: 8px;
@@ -271,54 +271,7 @@ body {
 
 .prediction-result {
   margin-top: 1rem;
-  color: #000;               /* antes #fff */
+  color: #fff;
   font-size: 1.1rem;
   text-align: center;
-}
-.form-row input::placeholder,
-.form-row select option[disabled] {
-  color: #000;
-  opacity: 1;
-}
-/* ─────────────────────────────────────────────────────────
-   1) Fuerza TODO texto dentro de .prediction-card a negro
-   ───────────────────────────────────────────────────────── */
-.prediction-card,
-.prediction-card * {
-  color: #000 !important;
-}
-
-/* ─────────────────────────────────────────────────────────
-   2) Asegura que los placeholders de <input> sean negros
-   ───────────────────────────────────────────────────────── */
-.form-row input::placeholder,
-.form-row input::-webkit-input-placeholder, /* Chrome, Safari, Opera */
-.form-row input:-ms-input-placeholder,      /* IE 10+ */
-.form-row input::-ms-input-placeholder,    /* Microsoft Edge */
-.form-row input:-moz-placeholder,          /* Firefox 18- */
-.form-row input::-moz-placeholder {        /* Firefox 19+ */
-  color: #000 !important;
-  opacity: 1 !important;
-}
-
-/* ─────────────────────────────────────────────────────────
-   3) Fuerza color en <select> y sus <option>
-   ───────────────────────────────────────────────────────── */
-.form-row select,
-.form-row select option {
-  color: #000 !important;
-  background-color: #fff !important;
-}
-
-/* Para el desplegable nativo de Windows (IE/Edge) */
-.form-row select::-ms-expand {
-  display: block;
-}
-
-/* ─────────────────────────────────────────────────────────
-   4) Si aún ves iconos o legends claros, también los vuelves negros
-   ───────────────────────────────────────────────────────── */
-.prediction-card h2,
-.prediction-card legend {
-  color: #000 !important;
 }

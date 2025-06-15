@@ -10,7 +10,6 @@
        CARGA DEL CSS DEL DASHBOARD (glassmorphism)
        -------------------------------------------- -->
   <link rel="stylesheet" href="/static/css/dashboard.css" />
-  <link rel="stylesheet" href="/static/css/styles.css" />
 
   <!-- --------------------------------------------
        CARGA DE Chart.js DESDE CDN
@@ -32,19 +31,9 @@
   </header>
 
   <!-- ======================
-       UPLOADER CSV
+       CONTENEDOR PRINCIPAL
        ====================== -->
-  <section id="uploader" class="uploader-section">
-    <h2>1. Carga tu CSV de Entrenamiento</h2>
-    <input type="file" id="csvFileInput" accept=".csv" />
-    <button id="uploadBtn" disabled>Subir CSV</button>
-    <p id="uploadStatus"></p>
-  </section>
-
-  <!-- ======================
-       CONTENEDOR PRINCIPAL (OCULTO HASTA UPLOAD)
-       ====================== -->
-  <main id="actions" style="display: none;">
+  <main>
     <!-- --------------------------------------------
          1. FILA DE KPIs (Ventas Totales, Utilidad, etc.)
          -------------------------------------------- -->
@@ -82,6 +71,7 @@
         <label for="vendor-select">Cliente (Customer Name):</label>
         <select id="vendor-select">
           <option value="Todos">Todos</option>
+          <!-- Se poblará por JS -->
         </select>
       </div>
 
@@ -90,6 +80,7 @@
         <label for="product-select">Producto (Product Name):</label>
         <select id="product-select">
           <option value="Todos">Todos</option>
+          <!-- Se poblará por JS -->
         </select>
       </div>
 
@@ -134,60 +125,110 @@
     </section>
 
     <!-- --------------------------------------------
-         5. SECCIÓN DE PREDICCIÓN MANUAL DE VENTAS (ACTUALIZADA)
+         5. SECCIÓN DE PREDICCIÓN MANUAL DE VENTAS
          -------------------------------------------- -->
     <section class="prediction-section">
       <div class="prediction-card">
         <h2>🔮 Predicción de Ventas</h2>
         <form id="prediction-form">
-          <!-- Región -->
+          <!-- Region -->
           <div class="form-row">
-            <label for="pred-region">🌍 Región</label>
+            <label for="pred-region">🌍 Region</label>
             <select id="pred-region">
-              <option value="">Seleccione región</option>
+              <option value="">Ej. West</option>
+              <!-- Se poblará dinámicamente -->
+            </select>
+          </div>
+          <!-- Product ID -->
+          <div class="form-row">
+            <label for="pred-product-id">📋 Product ID</label>
+            <select id="pred-product-id">
+              <option value="">Ej. P-1001</option>
+              <!-- Se poblará dinámicamente -->
+            </select>
+          </div>
+          <!-- Category -->
+          <div class="form-row">
+            <label for="pred-category">💼 Category</label>
+            <select id="pred-category">
+              <option value="">Ej. Technology</option>
+              <!-- Se poblará dinámicamente -->
+            </select>
+          </div>
+          <!-- Sub-Category -->
+          <div class="form-row">
+            <label for="pred-sub-category">📱 Sub-Category</label>
+            <select id="pred-sub-category">
+              <option value="">Ej. Phones</option>
+              <!-- Se poblará dinámicamente -->
             </select>
           </div>
           <!-- Product Name -->
           <div class="form-row">
-            <label for="pred-product">📦 Product Name</label>
-            <select id="pred-product">
-              <option value="">Seleccione producto</option>
+            <label for="pred-product-name">📦 Product Name</label>
+            <select id="pred-product-name">
+              <option value="">Ej. iPhone 12</option>
+              <!-- Se poblará dinámicamente -->
             </select>
           </div>
-          <!-- Fecha -->
+          <!-- Order Date -->
           <div class="form-row">
             <label for="pred-date">📅 Fecha</label>
             <input type="date" id="pred-date" />
           </div>
+          <!-- Quantity -->
+          <div class="form-row">
+            <label for="pred-quantity">📦 Quantity</label>
+            <input
+              type="number"
+              id="pred-quantity"
+              step="1"
+              min="1"
+              placeholder="Ej. 2"
+            />
+          </div>
+          <!-- Discount -->
+          <div class="form-row">
+            <label for="pred-discount">🎟 Discount</label>
+            <input
+              type="number"
+              id="pred-discount"
+              step="0.01"
+              min="0"
+              max="1"
+              placeholder="Ej. 0.1"
+            />
+          </div>
+          <!-- Profit -->
+          <div class="form-row">
+            <label for="pred-profit">💸 Profit</label>
+            <input
+              type="number"
+              id="pred-profit"
+              step="0.01"
+              placeholder="Ej. 200.00"
+            />
+          </div>
 
-          <button type="submit" class="btn-green">Predecir</button>
+          <!-- Botón Predecir -->
+          <button
+            type="button"
+            class="btn-green"
+            onclick="submitPrediction()"
+          >
+            Predecir
+          </button>
 
+          <!-- Aquí mostraremos el resultado -->
           <div id="prediction-result" class="prediction-result"></div>
-          <div id="prediction-error" class="prediction-error"></div>
         </form>
       </div>
     </section>
   </main>
 
   <!-- --------------------------------------------
-       CARGA DEL JS DEL FRONTEND
+       CARGA DEL JS DEL DASHBOARD
        -------------------------------------------- -->
-  <script src="/static/js/upload.js"></script>
-  <script src="/static/js/metrics.js"></script>
   <script src="/static/js/dashboard.js"></script>
-  <script src="/static/js/app.js"></script>
-
-  <!-- Inicialización predicción -->
-  <script>
-    // Cuando el CSV ya esté subido y entrenado…
-    document.addEventListener('modelsTrained', () => {
-      // Muestra todo el dashboard
-      document.getElementById('actions').style.display = '';
-      // Poblamos los selects y habilitamos el form
-      if (window.initPredictionByFields) {
-        window.initPredictionByFields();
-      }
-    });
-  </script>
 </body>
 </html>
