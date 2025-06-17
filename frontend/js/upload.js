@@ -1,50 +1,48 @@
-// upload.js: gestiona la subida del CSV y muestra las predicciones.
+// static/js/upload.js
 
-document.addEventListener('DOMContentLoaded', () => {
-  const form = document.getElementById('upload-form');
-  const fileInput = document.getElementById('file-input');
-  const errorDiv = document.getElementById('upload-error');
-  const resultsBody = document.getElementById('results-body');
+const uploadBtn = document.getElementById("uploadBtn");
+const fileInput = document.getElementById("csvFileInput");
+const status    = document.getElementById("uploadStatus");
+const actions   = document.getElementById("actions");
 
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    errorDiv.textContent = '';
-    resultsBody.innerHTML = '';
+// Solo habilitamos el botón si hay archivo seleccionado
+fileInput.addEventListener("change", () => {
+  uploadBtn.disabled = !fileInput.files.length;
+});
 
-    const file = fileInput.files[0];
-    if (!file) {
-      errorDiv.textContent = 'Por favor selecciona un archivo CSV.';
-      return;
+uploadBtn.addEventListener("click", async () => {
+  if (!fileInput.files.length) return;
+  status.textContent = "Subiendo CSV…";
+  const form = new FormData();
+  form.append("file", fileInput.files[0]);
+
+  try {
+    // 1) Llamar a upload_csv
+    let resp = await fetch("/upload_csv", {
+      method: "POST",
+      body: form
+    });
+    if (!resp.ok) {
+      throw new Error(`upload_csv: ${resp.status}`);
+    }
+    status.textContent = "CSV subido. Entrenando modelos…";
+
+    // 2) Llamar a train_xgb
+    resp = await fetch("/train_xgb", { method: "POST" });
+    if (!resp.ok) {
+      const err = await resp.json().catch(() => ({}));
+      throw new Error(err.detail || `train_xgb: ${resp.status}`);
     }
 
-    const formData = new FormData();
-    formData.append('file', file);
+    // 3) Indicar éxito y mostrar el dashboard
+    status.innerHTML = "✅ Modelos entrenados.";
+    actions.style.display = "";
 
-    fetch('http://localhost:8000/predict_csv', {
-      method: 'POST',
-      body: formData
-    })
-      .then(response => response.json())
-      .then(data => {
-        const predictions = data.predictions;
-        if (!predictions || predictions.length === 0) {
-          errorDiv.textContent = 'No se recibieron predicciones.';
-          return;
-        }
-        predictions.forEach((pred, idx) => {
-          const tr = document.createElement('tr');
-          const tdIdx = document.createElement('td');
-          tdIdx.textContent = idx + 1;
-          const tdPred = document.createElement('td');
-          tdPred.textContent = pred.toFixed(2);
-          tr.appendChild(tdIdx);
-          tr.appendChild(tdPred);
-          resultsBody.appendChild(tr);
-        });
-      })
-      .catch(err => {
-        errorDiv.textContent = 'Error al procesar la predicción.';
-        console.error(err);
-      });
-  });
+    // 4) Disparar evento para que app.js/HTML reaccionen
+    document.dispatchEvent(new Event("modelsTrained"));
+
+  } catch (err) {
+    console.error("Error en upload.js:", err);
+    status.textContent = `❌ ${err.message}`;
+  }
 });
