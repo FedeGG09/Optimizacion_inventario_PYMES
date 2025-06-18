@@ -41,6 +41,7 @@ uploaded_csv_path: Path | None = None
 FRONTEND_DIR = PROJECT_DIR / "frontend"
 app.mount("/static/css", StaticFiles(directory=FRONTEND_DIR / "css"), name="css")
 app.mount("/static/js",  StaticFiles(directory=FRONTEND_DIR / "js"),  name="js")
+app.mount("/static/img", StaticFiles(directory=FRONTEND_DIR / "static" / "img"), name="img")
 
 
 @app.get("/")
@@ -403,7 +404,7 @@ def sales_trend(
     if "Sales" not in df.columns:
         raise HTTPException(500, "Falta 'Sales'")
     df["YearMonth"] = df["Order Date"].dt.to_period("M").astype(str)
-    pivot = (
+    pivot = ( 
       df.groupby(["Customer Name","YearMonth"])["Sales"]
         .sum().unstack(fill_value=0)
         .reindex([f"{year}-{m:02d}" for m in range(1,13)], fill_value=0)
